@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="Description" content="Enter your description here"/>
+<script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.18.0/maps/maps-web.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.18.0/maps/maps.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="assets/css/style.css"> -->
+<link rel="stylesheet" href="../static/css/main.css">
+<title>B2B Simple Batch</title>
+</head>
+<body>
+
+    <nav class="nav nav-tabs nav-fill flex-column flex-sm-row">
+        <a class="nav-link border-3 border-dark" href="{{ url_for('site.home') }}">Geocoding Simple Solutions</a>
+        <a class="nav-link border-3 border-dark" href="{{ url_for('site.home') }}">Home</a>
+        {% if current_user.is_authenticated %}
+        <a class="nav-link border-3 border-dark" href="{{ url_for('site.profile') }}">Map</a>
+        <a class="nav-link border-3 border-dark" href="{{ url_for('auth.logout') }}">Log Out</a>
+        {% else %}
+        <a class="nav-link border-3 border-dark" href="{{ url_for('auth.signin') }}">Sign In</a>
+        <a class="nav-link border-3 border-dark" href="{{ url_for('auth.signup') }}">Sign Up</a>
+        {% endif %}
+    </nav>
+
+    {% block content %}
+    {% endblock content %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+</body>
+</html>

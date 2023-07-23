@@ -1,0 +1,87 @@
+
+
+body {
+    background-color: grey;
+}
+
+/* Navbar Styling */
+
+.nav {
+    background-color: rgb(146, 10, 10);
+    margin: 0 auto 0 auto;
+}
+
+.nav a {
+    color: white;
+    height: 8vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.25rem;
+}
+
+.nav a:visited {
+    text-decoration: none;
+    color: white;
+}
+
+.nav a:hover {
+    background-color: black;
+    color: white;
+    border: none;
+}
+
+/* Landing Page Styling */
+
+#map-pic {
+    width: 75%;
+    border: solid 5px rgb(146, 10, 10);
+    border-radius: 10px;
+}
+
+/* Map Page Styling */
+
+#map {
+    height: 60vh;
+    width: 75%;
+    border: solid  5px rgb(146, 10, 10);
+    border-radius: 10px;
+}
+
+#file-input {
+    width: 100px;
+}
+
+#store-name {
+    width: 50%;
+    border-radius: 5px;
+}
+
+#address-entry {
+    width: 50%;
+    border-radius: 5px;    
+}
+
+/* Media Queries */
+
+@media screen and (max-height: 500px) {
+    .nav a {
+        min-height: 40px;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    #map {
+        min-height: 250px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    #map-pic {
+        min-height: 35vh;
+    }
+    #map {
+        max-height: 40vh;
+        width: 90%;
+    }
+}

@@ -1,0 +1,1 @@
+gunicorn 'map_inventory:app'
