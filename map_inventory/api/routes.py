@@ -1,9 +1,11 @@
 # External Imports
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, redirect, url_for, render_template
+from flask_login import login_required
 
 # Internal Imports
 from map_inventory.helpers import token_required
 from map_inventory.models import db, MapMarkers, map_marker_schema, map_markers_schema
+from map_inventory.forms import MapForm
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -52,29 +54,36 @@ def get_markers(my_user):
     return jsonify(response)
 
 # Update 1 Marker by ID
-@api.route('/markers/<id>', methods = ['PUT'])
-@token_required
-def update_marker(my_user, id):
-    marker = MapMarkers.query.get(id)
+@api.get('/markers/update')
+@login_required
+def update_marker():
 
-    marker.store_name = request.json['store_name']
-    marker.address = request.json['address']
-    marker.user_token = my_user.token
+    args = dict(request.args)
+    
+    marker = MapMarkers.query.get(args['marker_id'])
+    marker.store_name = args['store_name']
+    marker.address = args['address']
 
     db.session.commit()
 
-    response = map_marker_schema.dump(marker)
+    # response = map_marker_schema.dump(marker)
 
-    return jsonify(response)
+    # return jsonify(response)
+
+    return redirect(url_for('site.profile'))
 
 # Delete 1 marker by ID
-@api.route('/markers/<id>', methods = ['DELETE'])
-@token_required
-def delete_marker(my_user, id):
+@api.route('/markers/<id>/delete')
+@login_required
+def delete_marker(id):
+    
     marker = MapMarkers.query.get(id)
+
     db.session.delete(marker)
     db.session.commit()
 
     response = map_marker_schema.dump(marker)
 
-    return jsonify(response)
+    return redirect(url_for('site.profile'))
+
+    # return jsonify(response)

@@ -13,6 +13,10 @@ site = Blueprint("site", __name__, template_folder="site_templates")
 def home():
     return render_template("landing.html")
 
+@site.route("/contact")
+def contact():
+    return render_template("contact.html")
+
 @site.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():

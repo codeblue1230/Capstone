@@ -1,7 +1,6 @@
-
-
 body {
     background-color: grey;
+    text-shadow: 1px 1px rgb(255, 105, 105);
 }
 
 /* Navbar Styling */
@@ -31,12 +30,36 @@ body {
     border: none;
 }
 
+/* Contact Page Styling */
+
+#contact-links {
+    font-size: 1.4rem;
+}
+
+#contact-links > a {
+    color: black;
+    text-decoration: none;
+}
+
+#contact-links > a:visited {
+    color: black;
+}
+
+#contact-links > a:hover {
+    color: white;
+}
+
 /* Landing Page Styling */
 
 #map-pic {
     width: 75%;
+    height: 60vh;
     border: solid 5px rgb(146, 10, 10);
     border-radius: 10px;
+}
+
+.land_para {
+    font-size: 1.3rem;
 }
 
 /* Map Page Styling */
@@ -52,14 +75,42 @@ body {
     width: 100px;
 }
 
-#store-name {
-    width: 50%;
+.form-group {
+    width: 80%;
     border-radius: 5px;
+    margin: 0 auto 0 auto;
 }
 
-#address-entry {
-    width: 50%;
-    border-radius: 5px;    
+.table {
+    margin: 0 auto 0 auto;
+    max-width: 100%;
+}
+
+td > a {
+    color: white;
+    text-decoration: none;
+}
+
+td > a:hover{
+    color: red;
+    text-decoration: none;
+    text-shadow: none;
+}
+
+.form-popup {
+    display: none;
+    z-index: 1;
+    position: fixed;
+    overflow: auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: lightgrey;
+    border: solid 5px black;
+    border-radius: 10px;
+    margin-left: 0 auto 0 auto;
+    width: 40vw;
+    height: 40vh;
 }
 
 /* Media Queries */
@@ -74,14 +125,30 @@ body {
     #map {
         min-height: 250px;
     }
+    #map-pic {
+        min-height: 250px;
+    }
 }
 
 @media screen and (max-width: 500px) {
     #map-pic {
-        min-height: 35vh;
+        max-height: 40vh;
+        width: 90%;
     }
     #map {
         max-height: 40vh;
         width: 90%;
+    }
+    .landing-para {
+        text-indent: 10%;
+    }
+    .about-para {
+        text-indent: 10%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .form-popup {
+        width: 95%;
     }
 }

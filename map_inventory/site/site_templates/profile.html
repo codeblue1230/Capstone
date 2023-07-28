@@ -9,6 +9,7 @@
 		<div class="col-12 text-center"><h4>Hello {{ current_user.username }}, See Below to Edit Your Map</h4></div>
 
 		<div class="col-10 col-md-6 text-center" id="map">
+
 			<script>
 
 				var i = 1
@@ -24,9 +25,43 @@
 				})
 
 
-				const addMarker = (longitude, latitude, color) => {
-					let storeName = document.getElementById("store-name").value
-					console.log(name)
+				// const addMarker = (longitude, latitude, color) => {
+				// 	let storeName = document.getElementById("store-name").value
+				// 	console.log(name)
+				// 	let newPopupColor = `'popup-color${i}'`
+				// 	let changedColor = `'marker${i}'`
+
+				// 	let popupDiv = document.createElement('div')
+				// 	popupDiv.innerHTML = `${storeName}<br><input type="color" id="popup-color${i}" name="popup-color" onchange="changePopup(${newPopupColor},${changedColor})"><br>`                             
+				// 	popupDiv.style.textAlign = "center"
+
+				// 	let popup = new tt.Popup({
+				// 		closeButton: false,
+				// 		offset: 22,
+				// 		anchor: "bottom"
+				// 	}).setDOMContent(popupDiv)
+
+
+				// 	const element = document.createElement("div")
+				// 	element.className = `marker${i}`
+				// 	const marker = new tt.Marker({
+				// 	draggable: true,
+				// 	element: element,
+				// 	}).setLngLat([longitude, latitude]).setPopup(popup).addTo(map)
+
+				// 	let setColor = document.querySelector(`.marker${i}`)
+				// 	setColor.style.backgroundColor = color
+				// 	setColor.style.backgroundSize = "cover"
+				// 	setColor.style.height = "22px"
+				// 	setColor.style.width = "22px"
+				// 	setColor.style.borderRadius = "11px"
+				// 	setColor.style.border = "solid 3px darkslategray"
+				// 	i++   
+				// }   
+
+
+				const addTableMarker = (longitude, latitude, color, name) => {
+					let storeName = name
 					let newPopupColor = `'popup-color${i}'`
 					let changedColor = `'marker${i}'`
 
@@ -48,7 +83,6 @@
 					element: element,
 					}).setLngLat([longitude, latitude]).setPopup(popup).addTo(map)
 
-					console.log(color)
 					let setColor = document.querySelector(`.marker${i}`)
 					setColor.style.backgroundColor = color
 					setColor.style.backgroundSize = "cover"
@@ -56,20 +90,18 @@
 					setColor.style.width = "22px"
 					setColor.style.borderRadius = "11px"
 					setColor.style.border = "solid 3px darkslategray"
-					console.log(setColor)
 					i++   
 				}   
 				
 				
 				const addExcelMarkers = (longitude, latitude, color, name) => {
-					console.log(name)
 					let newPopupColor = `'popup-color${i}'`
 					let changedColor = `'marker${i}'`
 
 					let popupDiv = document.createElement('div')
 					popupDiv.innerHTML = `${name}<br><input type="color" id="popup-color${i}" name="popup-color" onchange="changePopup(${newPopupColor},${changedColor})"><br>`                             
 					popupDiv.style.textAlign = "center"
-
+					
 					let popup = new tt.Popup({
 						closeButton: false,
 						offset: 22,
@@ -84,7 +116,6 @@
 					element: element,
 					}).setLngLat([longitude, latitude]).setPopup(popup).addTo(map)
 
-					console.log(color)
 					let setColor = document.querySelector(`.marker${i}`)
 					setColor.style.backgroundColor = color
 					setColor.style.backgroundSize = "cover"
@@ -92,53 +123,54 @@
 					setColor.style.width = "22px"
 					setColor.style.borderRadius = "11px"
 					setColor.style.border = "solid 3px darkslategray"
-					console.log(setColor)
+					// console.log(setColor)
 					i++   
+					console.log(element)
 				} 
 
 				
 				const changePopup = (classColor, newBackColor) => {
 					let newColor = document.getElementById(classColor)
 					let finalColor = newColor.value
-					console.log(newColor.value)
-					console.log(newBackColor)
 					let bgColor = document.querySelector(`.${newBackColor}`)
-					console.log(bgColor)
 					bgColor.style.backgroundColor = newColor.value
 				} 
+
 			
 			</script>
 		</div>
     
 
 		<div class="col-12 col-md-9 text-center mb-4" id="search">
-			<h1>What store would you like to input?</h1>
-			<form id="form-id">
+			<!-- <h1>What store would you like to input?</h1> -->
+			<!-- <form id="form-id">
 				<input type="text" id="store-name" name="store-name" placeholder="Enter Store Name"><br>
 				<input type="text" id="address-entry" name="address-entry" placeholder="Enter an Address"><br>
 				<label><h5>Pick Your Marker's Color</h5></label><br>
 				<input type="color" id="color-picker" name="color-picker"><br>
 				<button type="submit" id="submit-button">Submit</button>
-			</form>
+			</form> -->
+
 
 			<!-- Forms to Send Data To DataBase -->
 
 			<form method="POST" id="db-marker">
-				<div class="form-group">
+				<h1>Add A Store</h1>
+				<div class="form-group mb-5">
 					{{ form.hidden_tag() }}
-					<fieldset class="store-name-field">
+					<fieldset class="store-name-field mt-2">
 						{{ form.store_name.label }}
 						{{ form.store_name(class="form-control", placeholder="Enter Store Name") }}
 					</fieldset>
-					<fieldset class="address-field">
+					<fieldset class="address-field mt-2">
 						{{ form.address.label }}
 						{{ form.address(class="form-control", placeholder="Enter an Address") }}
 					</fieldset>
-					{{ form.submit_button(class="btn btn-warning btn-block") }}
+					{{ form.submit_button(class="btn btn-warning btn-block mt-2") }}
 				</div>
 			</form>
 
-			<table class="table table-dark">
+			<table class="table table-dark mb-2" id="my-table">
 				<thead>
 				<tr>
 					<th scope="col">Store Name</th>
@@ -149,34 +181,66 @@
 				{% for marker in markers %}
 					<tbody>
 					<tr>
-						<td>{{ marker.store_name }}</td>
-						<td>{{ marker.address }}</td>
-						<td>Update or Delete</td>
+						<td class="plot-names">{{ marker.store_name }}</td>
+						<td class="plot-address">{{ marker.address }}</td>
+						<td>
+							<a onclick="showForm(this.id); return false" href="#" id="f{{marker.id}}">Edit</a> or 
+							<a href="http://127.0.0.1:5000/api/markers/{{marker.id}}/delete">Delete</a>
+						</td>
 					</tr>
 					</tbody>
 				{% endfor %}
 			</table>
+			
 
-			<!-- Forms to Send Data Ends Here -->
+			<!-- Update Popup Form -->
+			
+			
+				{% for marker in markers %}
+				<div id="f{{marker.id}}" class="form-popup">
+				<form id="db-marker" action="{{url_for('api.update_marker')}}">				
+					<h1>Edit An Existing Store</h1>
+					<div class="form-group mb-5">
+						{{ form.hidden_tag() }}
+						<input type="hidden" name="marker_id" value="{{marker.id}}" class="update_popup_marker">
+						<fieldset class="store-name-field mt-2">
+							{{ form.store_name.label }}
+							{{ form.store_name(id="update-store", class="form-control", placeholder="Enter Store Name") }}
+						</fieldset>
+						<fieldset class="address-field mt-2">
+							{{ form.address.label }}
+							{{ form.address(id="update-address", class="form-control", placeholder="Enter an Address") }}
+						</fieldset>
+						{{ form.submit_button(class="btn btn-warning btn-block mt-2") }}
+						<button class="btn btn-primary btn-block mt-2" type="button" onclick="closeForm(this.id)" id="f{{marker.id}}">Cancel</button>
+					</div>
+				</form>
+				</div>	
+				{% endfor %}
+			
+				
+			<!-- Form to Send Excel Data -->
 			
 			<h3>Upload an Excel File and Geocode With Ease</h3>
 			<input type="file" name="file-input" id="file-input" accept=".xlsx" required>
-			<div id="insert-excel-table"></div>
+
+			<div id="insert-excel-table">
+
+			</div>
+		
 		</div>
-        
 
 
         <script>
 
             const input = document.getElementById("file-input")
             const table = document.getElementById("insert-excel-table")
+			
 
             input.addEventListener('change', (event) => {
                 const file = event.target.files[0]
                 readXlsxFile(file).then((rows) => {
-                    console.log(rows)
                     let lenRows = rows.length
-                    console.log(lenRows)
 
                     let delay = 0;
                     let offset = 333;
@@ -192,38 +256,105 @@
                     }
                 })
             })
+
+			function loadExcelPoints() {
+				let spanNum = 0
+				Object.keys(localStorage).forEach((key) => {
+					let newLong = JSON.parse(localStorage.getItem(key))
+					let table = document.getElementById("my-table")
+					let row = table.insertRow(-1)
+					let c1 = row.insertCell(0)
+					let c2 = row.insertCell(1)
+					let c3 = row.insertCell(2)
+					c1.innerHTML = newLong["name"]
+					c2.innerHTML = newLong["address"]
+					c3.innerHTML = `Edit or <span id='span-delete${spanNum}' onclick='deleteExcel(${spanNum})'>Delete</span>`
+                    addExcelMarkers(newLong["long"], newLong["lat"], newLong["color"], newLong["name"]);
+					spanNum++
+				})
+			}
+
         </script>
 
-
         <script>
+			var num = 0
             const getCoordinates = async (address, color, name='') => {
                 let response = await axios.get(`https://api.tomtom.com/search/2/geocode/${address.replace("/\s/g, ''")}.json?key=Xt9nHjAzfJLpY1CFEFJAmoxtFlBE9gAe`)
                 let longitude = response.data["results"][0]["position"]["lon"]
                 let latitude = response.data["results"][0]["position"]["lat"] 
-                console.log(color)
                 if (name === '') {
                     addMarker(longitude, latitude, color)
                 } else {
+					localStorage.setItem(num, JSON.stringify({"long": longitude, "lat": latitude, "name": name, "color": color, "address": address}))
+					num++
                     addExcelMarkers(longitude, latitude, color, name)
                 }
             }
             
 
-            let formSelector = document.getElementById("form-id");
-            formSelector.addEventListener("submit", addAddress)
-            console.log(document.querySelector("#address-entry"))
-            console.log(document.getElementById("color-picker"))
+            // let formSelector = document.getElementById("form-id");
+            // formSelector.addEventListener("submit", addAddress)
 
-            function addAddress(e) {
-                e.preventDefault()
-                let address = document.getElementById("address-entry").value
-                let markColor = document.getElementById("color-picker").value
-                console.log(markColor)
-                getCoordinates(address, markColor)
+            // function addAddress(e) {
+            //     e.preventDefault()
+            //     let address = document.getElementById("address-entry").value
+            //     let markColor = document.getElementById("color-picker").value
+            //     getCoordinates(address, markColor)
+            // }
+
+
+			// Load Markers on to the map
+
+			const getTableCoordinates = async (address, color, name) => {
+                let response = await axios.get(`https://api.tomtom.com/search/2/geocode/${address.replace("/\s/g, ''")}.json?key=Xt9nHjAzfJLpY1CFEFJAmoxtFlBE9gAe`)
+                let longitude = response.data["results"][0]["position"]["lon"]
+                let latitude = response.data["results"][0]["position"]["lat"] 
+				addTableMarker(longitude, latitude, color, name)
             }
+
+			function loadPoints() {
+				let test = document.querySelectorAll(".plot-names")
+				let addTest = document.querySelectorAll(".plot-address")
+				addressList = []
+				namesList = []
+				let delay = 0;
+                let offset = 333;
+				for (let i of test) {
+					namesList.push(i.textContent)
+				}
+				for (let item of addTest) {
+					addressList.push(item.textContent)
+				}
+				for (let i = 0; i < addressList.length; i++) {
+					setTimeout(() => {
+						getTableCoordinates(addressList[i], "rgb(120, 120, 120)", namesList[i]);
+					}, (delay += offset))
+					console.log(addressList[i])
+					console.log(namesList[i])
+				}
+			}
+
+			function showForm(clicked) {
+				var hField = document.getElementById(clicked)
+				document.querySelector(`div#${hField.id}`).style.display = "block"
+			}
+
+			function closeForm(clicked) {
+				var cField = document.getElementById(clicked)
+				document.querySelector(`div#${cField.id}`).style.display = "none"
+			}
+
+			function deleteExcel(anotherNumber) {
+				let mySpan = (document.getElementById(`span-delete${anotherNumber}`).parentElement).parentElement
+				// let bigParent = mySpan.parentElement
+				console.log(mySpan)
+				// Object.keys(localStorage).forEach((key) => {
+				// 	let excelLong = JSON.stringify(localStorage.getItem(key))
+				// 	console.log(mySpan.innerText)
+				// })
+			}
+
         </script>
-    
-    
 
 	</div>
 </div>

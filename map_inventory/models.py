@@ -66,8 +66,6 @@ class MapMarkers(db.Model):
     def set_id(self):
         return str(uuid.uuid4())
     
-    def __repr__(self):
-        return f"Address at {self.store_name} has been added to the database!"
     
 class MapMarkersSchema(ma.Schema):
     class Meta:
