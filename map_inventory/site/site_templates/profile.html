@@ -110,7 +110,6 @@
 						})
 					}
 				} 
-
 			
 			</script>
 		</div>
@@ -121,7 +120,7 @@
 
 			<form method="POST" id="db-marker">
 				<h1>Add A Store</h1>
-				<div class="form-group mb-5">
+				<div class="form-group mb-4">
 					{{ form.hidden_tag() }}
 					<fieldset class="store-name-field mt-2">
 						{{ form.store_name.label }}
@@ -135,27 +134,31 @@
 				</div>
 			</form>
 
-			<table class="table table-dark mb-2" id="my-table">
-				<thead>
-				<tr>
-					<th scope="col">Store Name</th>
-					<th scope="col">Address</th>
-					<th scope="col">Modify</th>
-				</tr>
-				</thead>
-				{% for marker in markers %}
-					<tbody>
+			<button id="remove_all" class="btn btn-primary btn-block mb-2" onclick="removeAll()">Remove All Excel Imports</button>
+
+			<div class="table-container">
+				<table class="table table-dark mb-2" id="my-table">
+					<thead>
 					<tr>
-						<td class="plot-names">{{ marker.store_name }}</td>
-						<td class="plot-address">{{ marker.address }}</td>
-						<td>
-							<a onclick="showForm(this.id); return false" href="#" id="f{{marker.id}}">Edit</a> or 
-							<a href="http://127.0.0.1:5000/api/markers/{{marker.id}}/delete">Delete</a>
-						</td>
+						<th scope="col">Store Name</th>
+						<th scope="col">Address</th>
+						<th scope="col">Modify</th>
 					</tr>
-					</tbody>
-				{% endfor %}
-			</table>
+					</thead>
+					{% for marker in markers %}
+						<tbody>
+						<tr>
+							<td class="plot-names">{{ marker.store_name }}</td>
+							<td class="plot-address">{{ marker.address }}</td>
+							<td>
+								<a onclick="showForm(this.id); return false" href="#" id="f{{marker.id}}">Edit</a> or 
+								<a href="http://127.0.0.1:5000/api/markers/{{marker.id}}/delete">Delete</a>
+							</td>
+						</tr>
+						</tbody>
+					{% endfor %}
+				</table>
+			</div>
 			
 
 			<!-- Update Popup Hidden Form -->
@@ -186,7 +189,30 @@
 				
 			<!-- Form to Send Excel Data -->
 			
-			<h3>Upload an Excel File and Geocode With Ease</h3>
+			<h3 id="format">
+				To upload your excel file be sure to format the document correctly. There must be 5 columns.
+				From left to right it should be Store Name, Street Address, City, State, Zip Code. See Example Below. 
+				After uploading the file wait for all points to appear on the map and then refresh the page.<br>
+			</h3>
+			<div id="ex"><h3>Example Table</h3></div>
+			<table class="table table-light mb-2">
+				<thead>
+				<tr>
+					<th scope="col" class="example_table">Store Name</th>
+					<th scope="col" class="example_table">Street Address</th>
+					<th scope="col" class="example_table">City</th>
+					<th scope="col" class="example_table">State</th>
+					<th scope="col" class="example_table">Zip Code</th>
+				</tr>
+				<tr>
+					<td scope="col" class="example_table">Example's R Us</td>
+					<td scope="col" class="example_table">123 Example Blvd</td>
+					<td scope="col" class="example_table">Tampa</td>
+					<td scope="col" class="example_table">FL</td>
+					<td scope="col" class="example_table">33592</td>
+				</tr>
+				</thead>
+			</table>
 			<input type="file" name="file-input" id="file-input" accept=".xlsx" required>
 
 			<div id="insert-excel-table">
@@ -240,9 +266,6 @@
 				})
 			}
 
-        </script>
-
-        <script>
 			var num = 0
             const getCoordinates = async (address, color, name='') => {
                 let response = await axios.get(`https://api.tomtom.com/search/2/geocode/${address.replace("/\s/g, ''")}.json?key=Xt9nHjAzfJLpY1CFEFJAmoxtFlBE9gAe`)
@@ -283,10 +306,10 @@
 					setTimeout(() => {
 						getTableCoordinates(addressList[i], "rgb(120, 120, 120)", namesList[i]);
 					}, (delay += offset))
-					console.log(addressList[i])
-					console.log(namesList[i])
 				}
 			}
+
+			// Open and close hidden forms for each table row (Not from Excel Import)
 
 			function showForm(clicked) {
 				var hField = document.getElementById(clicked)
@@ -298,15 +321,35 @@
 				document.querySelector(`div#${cField.id}`).style.display = "none"
 			}
 
+			// Delete table row of data imported into local storage from excel
+
 			function deleteExcel(excelDelete) {
-				let mySpan = document.getElementById(excelDelete)
-				// let bigParent = mySpan.parentElement
-				console.log(mySpan)
-				// Object.keys(localStorage).forEach((key) => {
-				// 	let excelLong = JSON.stringify(localStorage.getItem(key))
-				// 	console.log(mySpan.innerText)
-				// })
+				let mySpan = document.getElementById(excelDelete).parentElement.parentElement.children[0].innerHTML
+				let decodedMySpan = decodeEntities(mySpan) // calling function from below to decode html text
+				Object.keys(localStorage).forEach((key) => {
+					let storedValue = localStorage.getItem(key)
+					let storedObject = JSON.parse(storedValue)
+					if (storedObject["name"] === decodedMySpan) {
+						localStorage.removeItem(key)
+						location.reload()
+					}
+				})
 			}
+
+			function decodeEntities(text) {
+				let parser = new DOMParser()
+				let decodedElement = parser.parseFromString(text, "text/html")
+				return decodedElement.body.textContent
+			}
+
+			// Delete All imported excel rows
+			function removeAll() {
+				const confirmed = window.confirm("Are you sure you want to remove all of your excel imports?")
+				if (confirmed) {
+					localStorage.clear()
+					location.reload()
+				}
+			} 
 
         </script>
 

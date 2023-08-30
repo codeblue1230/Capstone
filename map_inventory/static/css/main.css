@@ -83,7 +83,12 @@ body {
 
 .table {
     margin: 0 auto 0 auto;
-    max-width: 100%;
+    width: 100%;
+}
+
+.table-container {
+    max-height: 400px;
+    overflow-y: scroll;
 }
 
 td > a {
@@ -91,9 +96,34 @@ td > a {
     text-decoration: none;
 }
 
-td > a:hover{
+td > a:hover {
     color: red;
     text-decoration: none;
+    text-shadow: none;
+}
+
+td > span:hover {
+    color: red;
+    text-shadow: none;
+    cursor: pointer;
+}
+
+#format {
+    margin-top: 15px;
+}
+
+#tutorial {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+#ex {
+    text-shadow: none;
+}
+
+.example_table {
+    border: solid black 1px;
     text-shadow: none;
 }
 
@@ -115,6 +145,31 @@ td > a:hover{
 }
 
 /* Media Queries */
+@media screen and (max-width: 250px) {
+    .example_table {
+        font-size: 3vw;
+        padding: 0;
+        font-weight: bold;
+    }
+}
+
+@media screen and (max-width: 300px) {
+    .example_table {
+        font-size: 3.25vw;
+        padding: 0;
+        font-weight: bold;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    tr {
+        font-size: 4vw;
+        padding: 0;
+    }
+    #remove_all {
+        font-size: 4.5vw;
+    }
+}
 
 @media screen and (max-height: 500px) {
     .nav a {
