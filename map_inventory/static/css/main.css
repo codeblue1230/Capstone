@@ -111,6 +111,7 @@ td > a:hover{
     margin-left: 0 auto 0 auto;
     width: 40vw;
     height: 40vh;
+    min-height: 250px;
 }
 
 /* Media Queries */
