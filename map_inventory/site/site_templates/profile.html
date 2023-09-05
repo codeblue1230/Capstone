@@ -116,7 +116,7 @@
     
 
 		<div class="col-12 col-md-9 text-center mb-4" id="search">
-			<!-- Forms to Send Data To DataBase -->
+			<!-- Form to Send Data To DataBase -->
 
 			<form method="POST" id="db-marker">
 				<h1>Add A Store</h1>
@@ -260,7 +260,8 @@
 					let c3 = row.insertCell(2)
 					c1.innerHTML = newLong["name"]
 					c2.innerHTML = newLong["address"]
-					c3.innerHTML = `Edit or <span id='excel${spanNum}' onclick='deleteExcel("excel${spanNum}")'>Delete</span>`
+					c3.innerHTML = `<span id='edit${spanNum}' onclick='editExcel("edit${spanNum}")'>Edit</span> or 
+									<span id='excel${spanNum}' onclick='deleteExcel("excel${spanNum}")'>Delete</span>`
                     addExcelMarkers(newLong["long"], newLong["lat"], newLong["color"], newLong["name"]);
 					spanNum++
 				})
@@ -321,7 +322,14 @@
 				document.querySelector(`div#${cField.id}`).style.display = "none"
 			}
 
-			// Delete table row of data imported into local storage from excel
+			// Edit Excel imports
+
+			function editExcel(excelEdit) {
+				let editor = document.getElementById(excelEdit)
+				console.log(editor)
+			}
+
+			// Delete row of data imported into local storage from excel
 
 			function deleteExcel(excelDelete) {
 				let mySpan = document.getElementById(excelDelete).parentElement.parentElement.children[0].innerHTML
